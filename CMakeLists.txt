@@ -15,7 +15,7 @@ find_library(wiringPi_LIB wiringPi)
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
         src/main.cpp
-        )
+        src/dht.cpp)
 
 # Add an executable with the above sources
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -23,6 +23,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_include_directories(${PROJECT_NAME}
         PRIVATE
-        ${PROJECT_SOURCE_DIR}/include
         ${wiringPi_LIB} ${CMAKE_THREAD_LIBS_INIT} crypt m rt
+        ${PROJECT_SOURCE_DIR}/include
+
         )
