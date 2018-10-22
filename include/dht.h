@@ -18,7 +18,7 @@ private:
 
 public:
     dht(uint8_t dhtPin = 7, uint8_t timeOut = 85);
-    std::tuple<float , float> getDhtValues();
+    std::tuple<int, int> getDhtValues();
 
 };
 

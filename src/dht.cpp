@@ -9,13 +9,12 @@ dht::dht(uint8_t dhtPin, uint8_t timeOut)
 {
 
 }
-std::tuple<float, float> dht::getDhtValues()
+std::tuple<int, int> dht::getDhtValues()
 {
-    std::array<int, 3> dht_values{0};
+    std::array<int, 5> dht_values{0};
     uint8_t lastState	= HIGH;
     uint8_t counter		= 0;
     uint8_t j		= 0, i;
-    float	f;
 
     pinMode( dhtPin, OUTPUT );
     digitalWrite( dhtPin, LOW );
@@ -54,9 +53,9 @@ std::tuple<float, float> dht::getDhtValues()
     if ( (j >= 40) &&
         (dht_values[4] == ( (dht_values[0] + dht_values[1] + dht_values[2] + dht_values[3]) & 0xFF) ) )
     {
-        return std::make_tuple(dht_values[0], dht_values[2]);
+        return std::make_tuple(dht_values[0] , dht_values[3]);
     }else  {
-        return std::make_tuple(-1, -1);
+        return std::make_tuple(-255, -255);
     }
 }
 
