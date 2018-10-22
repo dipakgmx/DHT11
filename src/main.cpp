@@ -13,8 +13,8 @@ int main()
     while (true)
     {
         dhtValues = DHT11.getDhtValues();
-        std::cout << "The temperature is " << std::get<0>(dhtValues) << " and humidity is " << std::get<1>(dhtValues) << std::endl;
-        delay( 1000 );
+        std::cout << "The humidity is " << std::get<0>(dhtValues) << "% and temperature is " << std::get<1>(dhtValues) << " °C"<< std::endl;
+        delay( 2000 );
     }
     return 0;
 }
