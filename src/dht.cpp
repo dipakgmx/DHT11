@@ -23,6 +23,8 @@ std::tuple<int, int> dht::getDhtValues()
     delayMicroseconds( 40 );
     pinMode( dhtPin, INPUT );
 
+
+
     for ( i = 0; i < timeOut; i++ )
     {
         counter = 0;
@@ -53,7 +55,7 @@ std::tuple<int, int> dht::getDhtValues()
     if ( (j >= 40) &&
         (dht_values[4] == ( (dht_values[0] + dht_values[1] + dht_values[2] + dht_values[3]) & 0xFF) ) )
     {
-        return std::make_tuple(dht_values[0] , dht_values[3]);
+        return std::make_tuple(dht_values[0] , dht_values[2]);
     }else  {
         return std::make_tuple(-255, -255);
     }

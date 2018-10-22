@@ -25,7 +25,6 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME}
         PRIVATE
         ${PROJECT_SOURCE_DIR}/include
-        ${wiringPi_LIB}
         ${CMAKE_THREAD_LIBS_INIT} crypt m rt
         )
 
