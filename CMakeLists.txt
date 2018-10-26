@@ -13,6 +13,10 @@ find_package(Threads REQUIRED)
 #Find the wiringPi library
 find_library(wiringPi_LIB wiringPi)
 
+#Find the sqlite3 library
+find_library(SQLITE3_LIBRARY sqlite3)
+
+
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
         src/main.cpp
@@ -30,4 +34,6 @@ target_include_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
-        ${wiringPi_LIB})
+        ${wiringPi_LIB}
+        ${SQLITE3_LIBRARY}
+        )
