@@ -2,14 +2,14 @@
 // Created by dipak on 21.10.18.
 //
 
-#include <dht.h>
+#include <DHT11.h>
 
-dht::dht(uint8_t dhtPin, uint8_t timeOut)
+DHT11::DHT11(uint8_t dhtPin, uint8_t timeOut)
     : dhtPin(dhtPin), timeOut(timeOut)
 {
 
 }
-std::tuple<int, int> dht::getDhtValues()
+std::tuple<int, int> DHT11::getDhtValues()
 {
     int temperature{0};
     int humidity{0};

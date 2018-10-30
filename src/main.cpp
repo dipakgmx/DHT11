@@ -1,69 +1,54 @@
 #include <iostream>
 #include <string>
-#include "dht.h"
+#include "Database.h"
+#include "DHT11.h"
 #include "sqlite3.h"
 
 int main(int argc, char* argv[]) {
+    //Local string to hold sqlite statements
+    std::string sqlStatement;
+    Database database("dht.11");
 
-    //Creating database handle -db
-    sqlite3 *db;
-    sqlite3_stmt *res;
-    char *err_msg = nullptr;
+    // Creat Sqlite table dhtreadings if it does not exist
+    sqlStatement = ("CREATE TABLE IF NOT EXISTS dhtreadings \
+                    (id INTEGER PRIMARY KEY , \
+                    humidity INTEGER, \
+                    temperature INTEGER, \
+                    datestamp DEFAULT CURRENT_DATE, \
+                    timestamp DEFAULT (time('now', 'localtime'))); \
+                    ");
 
-    int rc = sqlite3_open("dht11.db", &db);
-
-    if (rc != SQLITE_OK) {
-        std::cerr << "Cannot open database: " << sqlite3_errmsg(db) << std::endl;
-        sqlite3_close(db);
-        return 1;
+    try {
+        database.execute(sqlStatement);
+    }
+    catch (std::runtime_error const &exp) {
+        std::cout << "Failed to execute: " << sqlStatement << " Reason: " << exp.what() << std::endl;
+        return 0;
     }
 
-    char *sql = const_cast<char *>("CREATE TABLE IF NOT EXISTS dhtreadings \
-            (id INTEGER PRIMARY KEY , \
-            humidity INTEGER, \
-            temperature INTEGER, \
-            datestamp DEFAULT CURRENT_DATE, \
-            timestamp DEFAULT (time('now', 'localtime'))); \
-    ");
-
-    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
-
-    if (rc != SQLITE_OK) {
-        std::cerr << "Failed to create table!. SQL error " << sqlite3_errmsg(db) << std::endl;
-        return 1;
-    }
-    else {
-        std::cout << "Creation of SQL table successful!" << std::endl;
-    }
-
-
-    dht DHT11;
+    //Creating DHT class variable
+    DHT11 dht11;
+    //Creating tuple to retrieve values from DHT class
     std::tuple<int, int> dhtValues;
-    std::cout << "Raspberry Pi wiringPi DHT11 Temperature test program" << std::endl;
+
+    std::cout << "Raspberry Pi wiringPi dht11 Temperature test program" << std::endl;
 
     if ( wiringPiSetup() == -1 )
         exit( 1 );
-
+    //Loop every 5 minutes
     while (true)
     {
-        dhtValues = DHT11.getDhtValues();
+        dhtValues = dht11.getDhtValues();
         int humidity = std::get<0>(dhtValues);
         int temperature = std::get<1>(dhtValues);
-
+        // Insert dht values into sqlite database
         std::string sqlStatement = "INSERT INTO dhtreadings(humidity, temperature) VALUES ("
                                     +  std::to_string(humidity) +
                                     "," +  std::to_string(temperature) + ");";
 
-        const char *sqlOperation = sqlStatement.c_str();
-        rc = sqlite3_exec(db, sqlOperation, 0, 0, &err_msg);
-        if (rc != SQLITE_OK) {
-            std::cerr << "Element insertion failed!" << sqlite3_errmsg(db) << std::endl;
-            sqlite3_free(err_msg);
-            sqlite3_close(db);
-            return 1;
-        }
+        database.execute(sqlStatement);
         std::cout <<  "The humidity is " << std::get<0>(dhtValues) << "% and temperature is " << std::get<1>(dhtValues) << " °C"<< std::endl;
-        delay( 2000 );
+        delay( 300000 );
     }
     return 0;
 }

@@ -20,8 +20,8 @@ find_library(SQLITE3_LIBRARY sqlite3)
 # Create a sources variable with a link to all cpp files to compile
 set(SOURCES
         src/main.cpp
-        src/dht.cpp
-       )
+        src/DHT11.cpp
+        src/Database.cpp)
 
 # Add an executable with the above sources
 add_executable(${PROJECT_NAME} ${SOURCES})

@@ -10,14 +10,14 @@
 #include <tuple>
 #include <array>
 
-class dht
+class DHT11
 {
 private:
     uint8_t dhtPin;
     uint8_t timeOut;
 
 public:
-    dht(uint8_t dhtPin = 7, uint8_t timeOut = 85);
+    DHT11(uint8_t dhtPin = 7, uint8_t timeOut = 85);
     std::tuple<int, int> getDhtValues();
 
 };
