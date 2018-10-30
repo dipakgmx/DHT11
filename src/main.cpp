@@ -7,7 +7,7 @@
 int main(int argc, char* argv[]) {
     //Local string to hold sqlite statements
     std::string sqlStatement;
-    Database database("dht.11");
+    Database database("dht11.db");
 
     // Creat Sqlite table dhtreadings if it does not exist
     sqlStatement = ("CREATE TABLE IF NOT EXISTS dhtreadings \
